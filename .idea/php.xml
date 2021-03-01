@@ -124,6 +124,8 @@
       <path value="$PROJECT_DIR$/vendor/nyholm/psr7" />
       <path value="$PROJECT_DIR$/vendor/geekcom/validator-docs" />
       <path value="$PROJECT_DIR$/vendor/thiagocfn/inscricaoestadual" />
+      <path value="$PROJECT_DIR$/vendor/igorescobar/jquery-mask-plugin" />
+      <path value="$PROJECT_DIR$/vendor/lucascudo/laravel-pt-br-localization" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

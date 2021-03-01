@@ -131,6 +131,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/nyholm/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/geekcom/validator-docs" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/thiagocfn/inscricaoestadual" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/igorescobar/jquery-mask-plugin" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/lucascudo/laravel-pt-br-localization" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

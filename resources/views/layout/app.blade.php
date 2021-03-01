@@ -7,8 +7,10 @@
 
         <!-- CoreUI CSS -->
         <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css" crossorigin="anonymous">
-        @yield('css')
+        <link rel="stylesheet" href="https://unpkg.com/@coreui/icons@2.0.0-beta.3/css/free.min.css">
         <title>@yield('title')</title>
+        @yield('css')
+
     </head>
     <body class="c-app">
         @yield('content')

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BaseController as BaseController;
+use Validator;
 
 class RegisterController extends BaseController
 {
@@ -17,6 +18,16 @@ class RegisterController extends BaseController
     {
         $attr = $request->all();
         $attr['cpf'] = preg_replace('/[^0-9]/', '', $request->cpf);
+
+        $validator = Validator::make($attr, [
+            'cpf' => 'required|cpf',
+            'password' => 'required|min:6|max:255',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
         if(Auth::attempt($attr)){
             $user = Auth::user();
             $success['token'] =  $user->createToken('MyApp')-> accessToken;
@@ -25,7 +36,7 @@ class RegisterController extends BaseController
             return $this->sendResponse($success, 'User login successfully.');
         }
         else{
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error' => 'Credenciais incorretas.']);
         }
     }
 
@@ -33,6 +44,6 @@ class RegisterController extends BaseController
     {
         auth()->user()->tokens()->delete();
 
-        return $this->sendResponse([], 'Tokens Revoked.');
+        return $this->sendResponse([], 'O usuário foi deslogado.');
     }
 }
