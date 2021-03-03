@@ -126,6 +126,10 @@
       <path value="$PROJECT_DIR$/vendor/thiagocfn/inscricaoestadual" />
       <path value="$PROJECT_DIR$/vendor/igorescobar/jquery-mask-plugin" />
       <path value="$PROJECT_DIR$/vendor/lucascudo/laravel-pt-br-localization" />
+      <path value="$PROJECT_DIR$/vendor/jeroennoten/laravel-adminlte" />
+      <path value="$PROJECT_DIR$/vendor/laravel/ui" />
+      <path value="$PROJECT_DIR$/vendor/almasaeed2010/adminlte" />
+      <path value="$PROJECT_DIR$/vendor/canducci/cep" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

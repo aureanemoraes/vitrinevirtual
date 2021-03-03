@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Phone;
 use Illuminate\Http\Request;
 use App\Http\Resources\Phone as PhoneResource;
+use Validator;
 
 class PhoneController extends BaseController
 {
@@ -20,9 +21,11 @@ class PhoneController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'number_phone' => 'required|size:8',
+            'number_phone' => 'required|size:15',
             'type_phone' => 'required|max:255',
-            'is_whatsapp' => 'boolean'
+            'is_whatsapp' => 'boolean',
+            'user_id' => 'integer',
+            'bussiness_id' => 'integer'
         ]);
 
         if($validator->fails()){
@@ -30,6 +33,12 @@ class PhoneController extends BaseController
         }
 
         $phone = Phone::create($input);
+
+        if(isset($input['user_id']))
+            $phone->users()->attach($input['user_id']);
+
+        if(isset($input['bussiness_id']))
+            $phone->bussinesses()->attach($input['bussiness_id']);
 
         return $this->sendResponse(new PhoneResource($phone), 'Phone created successfully.');
     }

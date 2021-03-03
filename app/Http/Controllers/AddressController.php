@@ -21,12 +21,12 @@ class AddressController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'zip_code' => 'required|size:8',
+            'zip_code' => 'required|size:9',
             'public_place' => 'required|max:255',
             'place_number' => 'required|max:255',
             'neighborhood' => 'required|max:255',
             'complement' => 'max:255',
-            'uf' => 'required|integer',
+            'uf' => 'required|size:2',
             'user_id' => 'integer',
             'bussiness_id' => 'integer'
         ]);

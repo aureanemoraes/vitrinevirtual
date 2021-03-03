@@ -19,6 +19,12 @@ Route::post('login', [\App\Http\Controllers\RegisterController::class, 'login'])
 
 Route::middleware('auth:api')->group( function () {
     Route::post('logout', [\App\Http\Controllers\RegisterController::class, 'logout']);
+    Route::post('cep', function(\Canducci\Cep\Cep $cep, Request $request){
+        $cepResponse = $cep->find($request->cep);
+        $data = $cepResponse->getCepModel();
+        return response()->json($data);
+    });
+
     Route::resource('users', \App\Http\Controllers\UserController::class);
     Route::resource('addresses', \App\Http\Controllers\AddressController::class);
     Route::resource('phones', \App\Http\Controllers\PhoneController::class);

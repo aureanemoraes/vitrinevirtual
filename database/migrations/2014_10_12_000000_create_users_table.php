@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('is_admin')->default(0);
             $table->string('social_name')->nullable();
             $table->string('rg');
-            $table->integer('uf_rg');
+            $table->string('uf_rg');
             $table->integer('gender');
             $table->integer('ethnicity');
             $table->integer('civil_status');

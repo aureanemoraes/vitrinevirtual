@@ -17,7 +17,6 @@ class RegisterController extends BaseController
     public function login(Request $request)
     {
         $attr = $request->all();
-        $attr['cpf'] = preg_replace('/[^0-9]/', '', $request->cpf);
 
         $validator = Validator::make($attr, [
             'cpf' => 'required|cpf',

@@ -4,8 +4,47 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21fa931cfaabda638bea9dc800b0bf42",
+    "content-hash": "61b3641f63d64062e28e1d7560fca7ee",
     "packages": [
+        {
+            "name": "almasaeed2010/adminlte",
+            "version": "v3.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ColorlibHQ/AdminLTE.git",
+                "reference": "6b8b69261f1aacbb4be037c934f3c3652e6dff27"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ColorlibHQ/AdminLTE/zipball/6b8b69261f1aacbb4be037c934f3c3652e6dff27",
+                "reference": "6b8b69261f1aacbb4be037c934f3c3652e6dff27",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colorlib"
+                }
+            ],
+            "description": "AdminLTE - admin control panel and dashboard that's based on Bootstrap 4",
+            "homepage": "http://adminlte.io/",
+            "keywords": [
+                "JS",
+                "admin",
+                "back-end",
+                "css",
+                "less",
+                "responsive",
+                "template",
+                "theme",
+                "web"
+            ],
+            "time": "2020-05-19T20:41:11+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.0.2",
@@ -103,6 +142,51 @@
                 "math"
             ],
             "time": "2021-01-20T22:51:39+00:00"
+        },
+        {
+            "name": "canducci/cep",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netdragoon/canduccicep.git",
+                "reference": "b30aa566db1bf6cdfbe31367b22a2d2791a7fd04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netdragoon/canduccicep/zipball/b30aa566db1bf6cdfbe31367b22a2d2791a7fd04",
+                "reference": "b30aa566db1bf6cdfbe31367b22a2d2791a7fd04",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.7"
+            },
+            "require-dev": {
+                "illuminate/support": "7.x-dev",
+                "phpspec/phpspec": "6.1.1",
+                "phpunit/phpunit": "8.5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Canducci\\Cep\\": "src/Canducci/Cep/"
+                },
+                "files": [
+                    "src/Canducci/Cep/Helpers/cep_helper.php",
+                    "src/Canducci/Cep/Helpers/uf_helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fulvio",
+                    "email": "fulviocanducci@hotmail.com"
+                }
+            ],
+            "description": "CEP do Brasil Web Service ViaCep (https://viacep.com.br)",
+            "time": "2020-09-10T15:11:52+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -968,6 +1052,61 @@
             "time": "2016-04-27T16:16:55+00:00"
         },
         {
+            "name": "jeroennoten/laravel-adminlte",
+            "version": "v3.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jeroennoten/Laravel-AdminLTE.git",
+                "reference": "424f2e9bc741b54905564f99e618a46abeff79b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jeroennoten/Laravel-AdminLTE/zipball/424f2e9bc741b54905564f99e618a46abeff79b5",
+                "reference": "424f2e9bc741b54905564f99e618a46abeff79b5",
+                "shasum": ""
+            },
+            "require": {
+                "almasaeed2010/adminlte": "^3.0",
+                "laravel/framework": ">=6.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": ">=4.0",
+                "phpunit/phpunit": "^8.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JeroenNoten\\LaravelAdminLte\\AdminLteServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JeroenNoten\\LaravelAdminLte\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeroen Noten",
+                    "email": "jeroennoten@me.com"
+                }
+            ],
+            "description": "Easy AdminLTE integration with Laravel",
+            "keywords": [
+                "AdminLTE",
+                "admin",
+                "administrator",
+                "laravel"
+            ],
+            "time": "2021-02-24T11:12:30+00:00"
+        },
+        {
             "name": "laravel/framework",
             "version": "v8.29.0",
             "source": {
@@ -1267,6 +1406,60 @@
                 "psysh"
             ],
             "time": "2021-01-26T20:35:18+00:00"
+        },
+        {
+            "name": "laravel/ui",
+            "version": "v3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/ui.git",
+                "reference": "a1f82c6283c8373ea1958b8a27c3d5c98cade351"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/a1f82c6283c8373ea1958b8a27c3d5c98cade351",
+                "reference": "a1f82c6283c8373ea1958b8a27c3d5c98cade351",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^8.0",
+                "illuminate/filesystem": "^8.0",
+                "illuminate/support": "^8.0",
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Ui\\UiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Ui\\": "src/",
+                    "Illuminate\\Foundation\\Auth\\": "auth-backend/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel UI utilities and presets.",
+            "keywords": [
+                "laravel",
+                "ui"
+            ],
+            "time": "2021-01-06T19:20:22+00:00"
         },
         {
             "name": "lcobucci/clock",

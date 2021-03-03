@@ -147,6 +147,12 @@ return [
     */
 
     'attributes' => [
+        'social_name' => 'nome social',
+        'uf_rg' => 'uf do rg',
+        'birthdate' => 'data de nascimento',
+        'ethnicity' => 'etnia',
+        'civil_status' => 'estado civil',
+        'scholarity' => 'escolaridade',
         'address'   => 'endereço',
         'age'       => 'idade',
         'body'      => 'conteúdo',

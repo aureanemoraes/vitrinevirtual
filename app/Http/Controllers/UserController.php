@@ -22,6 +22,9 @@ class UserController extends BaseController
     public function store(Request $request)
     {
         $input = $request->all();
+        if(!isset($input['social_name'])) {
+            $input['social_name'] = '';
+        }
 
         $validator = Validator::make($input, [
             'name' => 'required|max:255',
@@ -31,7 +34,7 @@ class UserController extends BaseController
             'cpf' => 'required|unique:users|cpf',
             'birthdate' => 'required|date',
             'rg' => 'required',
-            'uf_rg' => 'required|integer',
+            'uf_rg' => 'required|size:2',
             'gender' => 'required|integer',
             'ethnicity' => 'required|integer',
             'civil_status' => 'required|integer',
@@ -45,7 +48,7 @@ class UserController extends BaseController
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
 
-        return $this->sendResponse(new UserResource($user), 'UserW created successfully.');
+        return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
 
     public function show($id)

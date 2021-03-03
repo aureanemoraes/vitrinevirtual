@@ -20,7 +20,7 @@ class CreateAddressesTable extends Migration
             $table->string('place_number');
             $table->string('neighborhood');
             $table->string('complement')->nullable();
-            $table->integer('uf');
+            $table->string('uf');
             $table->timestamps();
         });
     }

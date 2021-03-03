@@ -1,0 +1,76 @@
+@extends('layout.app')
+
+@section('title', 'Vitrine Virtual - Usuários')
+
+@section('content')
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <a role="button" class="btn btn-primary btn-lg btn-block" href="/users/create">Novo usuário</a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="display" id="users_table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('js')
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //let user = localStorage.getItem('user');
+            let user_token = localStorage.getItem('token');
+
+            $('#users_table').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Portuguese-Brasil.json"
+                },
+
+
+                "ajax": {
+                    headers: {
+                        accept: 'application/json',
+                        authorization: `Bearer ${user_token}`
+                    },
+                    url: "{{url('api/users')}}",
+                    dataSrc: "data"
+                },
+                "columnDefs": [ {
+                    "targets": 2,
+                    "data": null,
+                    "defaultContent": `
+                        <button type="button" class="btn btn-sm btn-warning">Alterar</button>
+                        <button type="button" class="btn btn-sm btn-danger">Remover</button>
+                    `
+                } ],
+                "columns": [
+                    {"data": 'name'},
+                    {'data': 'cpf'},
+                ],
+
+
+            });
+
+            $('#users_table tbody').on( 'click', 'button', function () {
+                var data = table.row( $(this).parents('tr') ).data();
+                alert( data[0] +"'s salary is: "+ data[ 5 ] );
+            } );
+
+        });
+    </script>
+@endsection
