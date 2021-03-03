@@ -15,11 +15,19 @@ class Phone extends Model
         'is_whatsapp'
     ];
 
-    public function user() {
+    public function users() {
         return $this->belongsToMany(User::class);
     }
 
     public function bussinesses() {
         return $this->belongsToMany(Bussiness::class);
+    }
+
+    public function getIsWhatsappAttribute() {
+        if($this->attributes['is_whatsapp'] == 1) {
+            return 'Sim';
+        } else {
+            return 'Não';
+        }
     }
 }

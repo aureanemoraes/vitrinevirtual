@@ -22,7 +22,10 @@ class SocialMediaController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'social_medias' => 'array'
+            'sm_name' => 'required|max:255',
+            'sm_url' => 'required|max:255',
+            'user_id' => 'integer',
+            'bussiness_id' => 'integer'
         ]);
 
         if($validator->fails()){
@@ -30,6 +33,12 @@ class SocialMediaController extends BaseController
         }
 
         $social_media = SocialMedia::create($input);
+
+        if(isset($input['user_id']))
+            $social_media->users()->attach($input['user_id']);
+
+        if(isset($input['bussiness_id']))
+            $social_media->bussinesses()->attach($input['bussiness_id']);
 
         return $this->sendResponse(new SocialMediaResource($social_media), 'SocialMedia created successfully.');
     }
@@ -50,8 +59,10 @@ class SocialMediaController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'social_medias' => 'array'
-
+            'sm_name' => 'required|max:255',
+            'sm_url' => 'required|max:255',
+            'user_id' => 'integer',
+            'bussiness_id' => 'integer'
         ]);
 
         if($validator->fails()){

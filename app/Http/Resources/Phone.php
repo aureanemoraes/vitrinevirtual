@@ -14,6 +14,11 @@ class Phone extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'number_phone' => $this->number_phone,
+            'type_phone' => $this->type_phone,
+            'is_whatsapp' => $this->is_whatsapp,
+        ];
     }
 }

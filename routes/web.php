@@ -33,3 +33,7 @@ Route::get('users/create', function () {
     return view('users.create');
 });
 
+Route::get('users/edit/{id}', function ($id) {
+    return view('users.update');
+});
+

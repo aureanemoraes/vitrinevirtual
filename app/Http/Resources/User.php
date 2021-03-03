@@ -21,9 +21,11 @@ class User extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'email' => $this->email,
+            'social_name' => $this->social_name,
             'default_name' => $this->default_name,
             'cpf' => $this->cpf,
-            'birthdate' => $this->birthdate->format('d/m/Y'),
+            'birthdate' => $this->birthdate->format('Y-m-d'),
             'is_admin' => $this->is_admin,
             'rg' => $this->rg,
             'uf_rg' => $this->uf_rg,

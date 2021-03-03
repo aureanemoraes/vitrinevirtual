@@ -70,7 +70,7 @@ class UserController extends BaseController
             'name' => 'required|max:255',
             'social_name' => 'max:255',
             'email' => 'required|unique:users,email,' . $user->id,
-            'password' => 'required|confirmed|min:6',
+            'password' => 'confirmed|min:6',
             'cpf' => 'required|cpf|unique:users,cpf,' . $user->id,
             'birthdate' => 'required|date',
             'rg' => 'required',

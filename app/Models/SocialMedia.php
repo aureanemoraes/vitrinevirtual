@@ -12,11 +12,11 @@ class SocialMedia extends Model
     protected $table = 'social_media';
 
     protected $fillable = [
-        'social_medias'
+        'sm_name',
+        'sm_url'
     ];
 
     protected $casts = [
-        'social_medias' => 'array'
     ];
 
     public function users() {

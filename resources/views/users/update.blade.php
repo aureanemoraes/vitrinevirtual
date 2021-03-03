@@ -24,13 +24,13 @@
                         <a class="nav-link active" data-toggle="tab" href="#user_tab" id="user_tab_link">Usuário</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" data-toggle="tab" href="#address_tab" id="address_tab_link">Endereço</a>
+                        <a class="nav-link" data-toggle="tab" href="#address_tab" id="address_tab_link">Endereço</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" data-toggle="tab" href="#phone_tab" id="phone_tab_link">Contatos</a>
+                        <a class="nav-link" data-toggle="tab" href="#phone_tab" id="phone_tab_link">Contatos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" data-toggle="tab" href="#social_media_tab" id="social_media_tab_link">Redes sociais</a>
+                        <a class="nav-link" data-toggle="tab" href="#social_media_tab" id="social_media_tab_link">Redes sociais</a>
                     </li>
                 </ul>
 
@@ -238,72 +238,51 @@
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        function deletePhone(phone_id) {
-            var login_request = $.ajax({
-                headers: {
-                    accept: 'application/json',
-                    authorization: `Bearer ${user_token}`
-                },
-                method: "DELETE",
-                url: "/api/phones/" + phone_id,
-            });
+        var attributes = [
+            'name',
+            'social_name',
+            'cpf',
+            'rg',
+            'uf_rg',
+            'birthdate',
+            'gender',
+            'ethnicity',
+            'civil_status',
+            'scholarity',
+            'email',
+            'password',
+            'password_confirmation'
+        ];
 
-            login_request.done(function( data ) {
-                $('#phone_' + phone_id).remove();
-            });
+        var address_attributes = [
+            'zip_code',
+            'public_place',
+            'place_number',
+            'neighborhood',
+            'complement',
+            'uf'
+        ];
 
-            login_request.fail(function( data ) {
-                console.log(data);
-            });
-        }
-        $(function() {
-            var attributes = [
-                'name',
-                'social_name',
-                'cpf',
-                'rg',
-                'uf_rg',
-                'birthdate',
-                'gender',
-                'ethnicity',
-                'civil_status',
-                'scholarity',
-                'email',
-                'password',
-                'password_confirmation'
-            ];
+        var phone_attributes = [
+            'number_phone',
+            'type_phone',
+            'is_whatsapp'
+        ];
 
-            var address_attributes = [
-                'zip_code',
-                'public_place',
-                'place_number',
-                'neighborhood',
-                'complement',
-                'uf'
-            ];
+        var social_media_attributes = [
+            'sm_name',
+            'sm_url',
+        ];
 
-            var phone_attributes = [
-                'number_phone',
-                'type_phone',
-                'is_whatsapp'
-            ];
-            var social_media_attributes = [
-                'sm_name',
-                'sm_url',
-            ];
+        var user_id;
 
-
-            var user_id;
-
-            var user_token = localStorage.getItem('token');
-
-            var spinner_login = `
+        var spinner_login = `
                 <div class="spinner-border spinner-border-sm" role="status">
                   <span class="sr-only">Carregando...</span>
                 </div>
             `;
 
-            var uf_options = `
+        var uf_options = `
                 <option value="AC">Acre</option>
                 <option value="AL">Alagoas</option>
                 <option value="AP">Amapá</option>
@@ -333,7 +312,7 @@
                 <option value="TO">Tocantins</option>
             `;
 
-            var gender_options = `
+        var gender_options = `
                 <option value=1>Masculino</option>
                 <option value=2>Feminino</option>
                 <option value=3>Homem transgênero</option>
@@ -346,7 +325,7 @@
                 <option value=10>Outros</option>
             `;
 
-            var ethnicity_options = `
+        var ethnicity_options = `
                 <option value=1>Amarelo</option>
                 <option value=2>Branco</option>
                 <option value=3>Indígena</option>
@@ -354,7 +333,7 @@
                 <option value=5>Preto</option>
             `;
 
-            var civil_status_options = `
+        var civil_status_options = `
                 <option value="0">Solteiro(a)</option>
                 <option value="1">Casado(a)</option>
                 <option value="2">Separado(a)</option>
@@ -363,7 +342,7 @@
                 <option value="5">Amasiado(a)</option>
             `;
 
-            var scholarity_options = `
+        var scholarity_options = `
                 <option value="1">Ensino fundamental incompleto</option>
                 <option value="2">Ensino fundamental completo</option>
                 <option value="3">Ensino médio incompleto</option>
@@ -375,6 +354,67 @@
                 <option value="9">Nível superior incompleto</option>
                 <option value="10">Nível superior completo</option>
             `;
+
+        function deletePhone(phone_id) {
+            var login_request = $.ajax({
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${window.user_token}`
+                },
+                method: "DELETE",
+                url: "/api/phones/" + phone_id,
+            });
+
+            login_request.done(function( data ) {
+                $('#phone_' + phone_id).remove();
+            });
+
+            login_request.fail(function( data ) {
+                console.log(data);
+            });
+        }
+        $(function() {
+            const currentURL = $(location).attr('href'); //jQuery solution
+            const id = currentURL.substring(currentURL.lastIndexOf('/') + 1);
+
+            // Buscar dados do usuários
+
+            var login_request = $.ajax({
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${user_token}`
+                },
+                method: "GET",
+                url: "/api/users/" + id,
+            });
+
+            login_request.done(function( data ) {
+                let user = data.data;
+
+                for(u in user) {
+                    attributes.forEach(element => {
+                        if(element == u) {
+                            $(`#${element}`).val(user[u]);
+                            console.log(user[u]);
+                        }
+                    })
+                }
+                if(user['addresses'].length > 0) {
+                    user['addresses'].forEach(element_address => {
+                        for(key in element_address) {
+                            address_attributes.forEach(element => {
+                                if(key == element) {
+                                    $(`#${element}`).val(element_address[key]);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            login_request.fail(function( data ) {
+               console.log(data);
+            });
 
             $('#uf_rg').append(uf_options);
             $('#uf').append(uf_options);
@@ -607,7 +647,6 @@
                 login_request.done(function( data ) {
                     $('#submit_button').text('Salvar e continuar');
                     $("#submit_button").removeAttr("disabled", "disabled");
-                    $('#address_tab_link').removeClass('disabled');
                     $('#address_tab_link').tab('show');
                     $('#user_tab_link').addClass('disabled');
                     user_id = data.data.id;
@@ -668,7 +707,6 @@
                 login_request.done(function( data ) {
                     $('#address_submit_button').text('Salvar e continuar');
                     $("#address_submit_button").removeAttr("disabled", "disabled");
-                    $('#phone_tab_link').removeClass('disabled');
                     $('#phone_tab_link').tab('show');
                     $('#address_tab_link').addClass('disabled');
 
@@ -695,7 +733,6 @@
             $('#phone_fineshed_button').click(() => {
                 $('#phone_submit_button').html(spinner_login);
                 $("#phone_submit_button").attr("disabled", "disabled");
-                $('#social_media_tab_link').removeClass('disabled');
                 $('#social_media_tab_link').tab('show');
                 $('#phone_tab_link').addClass('disabled');
             });

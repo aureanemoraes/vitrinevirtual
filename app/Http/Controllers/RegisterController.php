@@ -35,6 +35,7 @@ class RegisterController extends BaseController
             return $this->sendResponse($success, 'User login successfully.');
         }
         else{
+            redirect('/login');
             return $this->sendError('Unauthorised.', ['error' => 'Credenciais incorretas.']);
         }
     }

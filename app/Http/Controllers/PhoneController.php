@@ -20,6 +20,9 @@ class PhoneController extends BaseController
     {
         $input = $request->all();
 
+        if(!isset($input['is_whatsapp']))
+            $input['is_whatsapp'] = 0;
+
         $validator = Validator::make($input, [
             'number_phone' => 'required|size:15',
             'type_phone' => 'required|max:255',

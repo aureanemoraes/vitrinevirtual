@@ -14,6 +14,7 @@
                     <table class="display" id="users_table">
                         <thead>
                         <tr>
+                            <th scope="col">ID</th>
                             <th scope="col">Nome</th>
                             <th scope="col">CPF</th>
                             <th scope="col">Ações</th>
@@ -33,10 +34,10 @@
 
     <script>
         $(document).ready(function () {
-            //let user = localStorage.getItem('user');
-            let user_token = localStorage.getItem('token');
+            //var user = localStorage.getItem('user');
+            var user_token = localStorage.getItem('token');
 
-            $('#users_table').DataTable({
+            var table = $('#users_table').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Portuguese-Brasil.json"
                 },
@@ -51,14 +52,20 @@
                     dataSrc: "data"
                 },
                 "columnDefs": [ {
-                    "targets": 2,
+                    "targets": 3,
                     "data": null,
                     "defaultContent": `
                         <button type="button" class="btn btn-sm btn-warning">Alterar</button>
                         <button type="button" class="btn btn-sm btn-danger">Remover</button>
                     `
-                } ],
+                },
+                {
+                    "targets": [ 0 ],
+                    "visible": false
+                }
+                ],
                 "columns": [
+                    {"data": 'id'},
                     {"data": 'name'},
                     {'data': 'cpf'},
                 ],
@@ -68,7 +75,10 @@
 
             $('#users_table tbody').on( 'click', 'button', function () {
                 var data = table.row( $(this).parents('tr') ).data();
-                alert( data[0] +"'s salary is: "+ data[ 5 ] );
+                console.log(data);
+
+               window.location.replace('/users/edit/' + data.id);
+
             } );
 
         });
