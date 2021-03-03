@@ -39,6 +39,8 @@ class UserController extends BaseController
             'ethnicity' => 'required|integer',
             'civil_status' => 'required|integer',
             'scholarity' => 'required|integer',
+            'bussiness_name' => 'max:255',
+            'bussiness_description' => 'max:2048',
         ]);
 
         if($validator->fails()){
@@ -66,37 +68,32 @@ class UserController extends BaseController
     {
         $input = $request->all();
 
+        if(!isset($input['password'])) {
+            $input['password'] = $user->password;
+        }
+
         $validator = Validator::make($input, [
             'name' => 'required|max:255',
             'social_name' => 'max:255',
             'email' => 'required|unique:users,email,' . $user->id,
-            'password' => 'confirmed|min:6',
+            'password' => 'nullable|min:6',
             'cpf' => 'required|cpf|unique:users,cpf,' . $user->id,
             'birthdate' => 'required|date',
             'rg' => 'required',
-            'uf_rg' => 'required|integer',
+            'uf_rg' => 'required',
             'gender' => 'required|integer',
             'ethnicity' => 'required|integer',
             'civil_status' => 'required|integer',
             'scholarity' => 'required|integer',
+            'bussiness_name' => 'max:255',
+            'bussiness_description' => 'max:2048',
         ]);
 
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $user->name = $input['name'];
-        $user->social_name = $input['social_name'];
-        $user->email = $input['email'];
-        $user->password = bcrypt($input['password']);
-        $user->cpf = $input['cpf'];
-        $user->birthdate = $input['birthdate'];
-        $user->rg = $input['rg'];
-        $user->uf_rg = $input['uf_rg'];
-        $user->gender = $input['gender'];
-        $user->ethnicity = $input['ethnicity'];
-        $user->civil_status = $input['civil_status'];
-        $user->scholarity = $input['scholarity'];
+        $user->fill($input);
         $user->save();
 
         return $this->sendResponse(new UserResource($user), 'User updated successfully.');

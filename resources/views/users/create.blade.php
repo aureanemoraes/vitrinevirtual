@@ -126,6 +126,17 @@
                                     </div>
                                 </div>
                             </section>
+                            <section>
+                                <h3>Dados do empreendimento</h3>
+                                <div class="form-group" id="bussiness_name_container">
+                                    <label for="bussiness_name">Nome</label>
+                                    <input type="text" class="form-control" id="bussiness_name" name="bussiness_name" placeholder="Nome do empreendimento...">
+                                </div>
+                                <div class="form-group" id="bussiness_description_container">
+                                    <label for="bussiness_description">Descrição</label>
+                                    <textarea name="bussiness_description" id="bussiness_description" cols="30" rows="10" class="form-control" placeholder="Descreva seu empreendimento..."></textarea>
+                                </div>
+                            </section>
                             <div align="right" style="margin-top: 5px;">
                                 <button type="submit" class="btn btn-success" id="submit_button"><span class="cil-check"></span> Salvar e continuar</button>
                             </div>
@@ -270,7 +281,9 @@
                 'scholarity',
                 'email',
                 'password',
-                'password_confirmation'
+                'password_confirmation',
+                'bussiness_name',
+                'bussiness_description'
             ];
 
             var address_attributes = [

@@ -24,13 +24,13 @@
                         <a class="nav-link active" data-toggle="tab" href="#user_tab" id="user_tab_link">Usuário</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#address_tab" id="address_tab_link">Endereço</a>
+                        <a class="nav-link disabled" data-toggle="tab" href="#address_tab" id="address_tab_link">Endereço</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#phone_tab" id="phone_tab_link">Contatos</a>
+                        <a class="nav-link disabled" data-toggle="tab" href="#phone_tab" id="phone_tab_link">Contatos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#social_media_tab" id="social_media_tab_link">Redes sociais</a>
+                        <a class="nav-link disabled" data-toggle="tab" href="#social_media_tab" id="social_media_tab_link">Redes sociais</a>
                     </li>
                 </ul>
 
@@ -124,6 +124,17 @@
                                         <label for="password_confirmation">Confirmação de senha</label>
                                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="******">
                                     </div>
+                                </div>
+                            </section>
+                            <section>
+                                <h3>Dados do empreendimento</h3>
+                                <div class="form-group" id="bussiness_name_container">
+                                    <label for="bussiness_name">Nome</label>
+                                    <input type="text" class="form-control" id="bussiness_name" name="bussiness_name" placeholder="Nome do empreendimento...">
+                                </div>
+                                <div class="form-group" id="bussiness_description_container">
+                                    <label for="bussiness_description">Descrição</label>
+                                    <textarea name="bussiness_description" id="bussiness_description" cols="30" rows="10" class="form-control" placeholder="Descreva seu empreendimento..."></textarea>
                                 </div>
                             </section>
                             <div align="right" style="margin-top: 5px;">
@@ -251,7 +262,9 @@
             'scholarity',
             'email',
             'password',
-            'password_confirmation'
+            'password_confirmation',
+            'bussiness_name',
+            'bussiness_description'
         ];
 
         var address_attributes = [
@@ -268,13 +281,15 @@
             'type_phone',
             'is_whatsapp'
         ];
-
         var social_media_attributes = [
             'sm_name',
             'sm_url',
         ];
 
+
         var user_id;
+
+        user_token = localStorage.getItem('token');
 
         var spinner_login = `
                 <div class="spinner-border spinner-border-sm" role="status">
@@ -355,11 +370,50 @@
                 <option value="10">Nível superior completo</option>
             `;
 
+        const currentURL = $(location).attr('href'); //jQuery solution
+        const id = currentURL.substring(currentURL.lastIndexOf('/') + 1);
+
+        // Buscar dados do usuários
+        var login_request = $.ajax({
+            headers: {
+                accept: 'application/json',
+                authorization: `Bearer ${user_token}`
+            },
+            method: "GET",
+            url: "/api/users/" + id,
+        });
+
+        login_request.done(function( data ) {
+            let user = data.data;
+
+            for(u in user) {
+                attributes.forEach(element => {
+                    if(element == u) {
+                        $(`#${element}`).val(user[u]);;
+                    }
+                })
+            }
+            if(user['addresses'].length > 0) {
+                user['addresses'].forEach(element_address => {
+                    for(key in element_address) {
+                        address_attributes.forEach(element => {
+                            if(key == element) {
+                                $(`#${element}`).val(element_address[key]);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        login_request.fail(function( data ) {
+        });
+
         function deletePhone(phone_id) {
             var login_request = $.ajax({
                 headers: {
                     accept: 'application/json',
-                    authorization: `Bearer ${window.user_token}`
+                    authorization: `Bearer ${user_token}`
                 },
                 method: "DELETE",
                 url: "/api/phones/" + phone_id,
@@ -370,51 +424,9 @@
             });
 
             login_request.fail(function( data ) {
-                console.log(data);
             });
         }
         $(function() {
-            const currentURL = $(location).attr('href'); //jQuery solution
-            const id = currentURL.substring(currentURL.lastIndexOf('/') + 1);
-
-            // Buscar dados do usuários
-
-            var login_request = $.ajax({
-                headers: {
-                    accept: 'application/json',
-                    authorization: `Bearer ${user_token}`
-                },
-                method: "GET",
-                url: "/api/users/" + id,
-            });
-
-            login_request.done(function( data ) {
-                let user = data.data;
-
-                for(u in user) {
-                    attributes.forEach(element => {
-                        if(element == u) {
-                            $(`#${element}`).val(user[u]);
-                            console.log(user[u]);
-                        }
-                    })
-                }
-                if(user['addresses'].length > 0) {
-                    user['addresses'].forEach(element_address => {
-                        for(key in element_address) {
-                            address_attributes.forEach(element => {
-                                if(key == element) {
-                                    $(`#${element}`).val(element_address[key]);
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-
-            login_request.fail(function( data ) {
-               console.log(data);
-            });
 
             $('#uf_rg').append(uf_options);
             $('#uf').append(uf_options);
@@ -446,7 +458,6 @@
                 });
 
                 login_request.done(function( data ) {
-                    console.log(data);
                     $("#zip_code_button").removeAttr("disabled", "disabled");
                     $('#zip_code_button').text('Buscar');
 
@@ -459,7 +470,6 @@
                 login_request.fail(function( data ) {
                     $("#zip_code_button").removeAttr("disabled", "disabled");
                     $('#zip_code_button').text('Buscar');
-                    console.log(data);
                 });
             });
 
@@ -639,14 +649,15 @@
                         accept: 'application/json',
                         authorization: `Bearer ${user_token}`
                     },
-                    method: "POST",
-                    url: "/api/users",
+                    method: "PUT",
+                    url: "/api/users/" + id,
                     data: info,
                 });
 
                 login_request.done(function( data ) {
                     $('#submit_button').text('Salvar e continuar');
                     $("#submit_button").removeAttr("disabled", "disabled");
+                    $('#address_tab_link').removeClass('disabled');
                     $('#address_tab_link').tab('show');
                     $('#user_tab_link').addClass('disabled');
                     user_id = data.data.id;
@@ -707,6 +718,7 @@
                 login_request.done(function( data ) {
                     $('#address_submit_button').text('Salvar e continuar');
                     $("#address_submit_button").removeAttr("disabled", "disabled");
+                    $('#phone_tab_link').removeClass('disabled');
                     $('#phone_tab_link').tab('show');
                     $('#address_tab_link').addClass('disabled');
 
@@ -733,6 +745,7 @@
             $('#phone_fineshed_button').click(() => {
                 $('#phone_submit_button').html(spinner_login);
                 $("#phone_submit_button").attr("disabled", "disabled");
+                $('#social_media_tab_link').removeClass('disabled');
                 $('#social_media_tab_link').tab('show');
                 $('#phone_tab_link').addClass('disabled');
             });
@@ -750,7 +763,7 @@
                 setTimeout(() => {
                         window.location.replace("/users");
                     },
-                1000);
+                    1000);
             });
 
         });

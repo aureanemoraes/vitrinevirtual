@@ -19,10 +19,6 @@ class Phone extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function bussinesses() {
-        return $this->belongsToMany(Bussiness::class);
-    }
-
     public function getIsWhatsappAttribute() {
         if($this->attributes['is_whatsapp'] == 1) {
             return 'Sim';

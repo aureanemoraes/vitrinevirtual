@@ -19,8 +19,8 @@ class CreateProductsTable extends Migration
             $table->longText('description')->nullable();
             $table->float('price');
             $table->string('payment_methods'); // 1: Dinheiro; 2: Cartão de crédito; 3: Cartão de débito; 4: Pix; 5: Transferência Bancária
-            $table->unsignedBigInteger('bussiness_id');
-            $table->foreign('bussiness_id')->references('id')->on('bussinesses');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

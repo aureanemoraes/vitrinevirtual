@@ -147,6 +147,8 @@ return [
     */
 
     'attributes' => [
+        'bussiness_name' => 'nome do empreendimento',
+        'bussiness_description' => 'descrição do empreendimento',
         'social_name' => 'nome social',
         'uf_rg' => 'uf do rg',
         'birthdate' => 'data de nascimento',

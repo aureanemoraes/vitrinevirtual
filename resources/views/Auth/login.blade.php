@@ -93,6 +93,7 @@
                     $("#submit_button").removeAttr("disabled", "disabled");
                     let errors = data.responseJSON;
 
+
                     if(errors.data.error) {
                         $('#error_container').html(`
                         <p style="color:red" id="invalid-feedback-credentials"><span>${errors.data.error}</span></p>

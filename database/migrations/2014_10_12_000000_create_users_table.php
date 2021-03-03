@@ -29,6 +29,8 @@ class CreateUsersTable extends Migration
             $table->integer('ethnicity');
             $table->integer('civil_status');
             $table->integer('scholarity');
+            $table->string('bussiness_name')->nullable();
+            $table->longText('bussiness_description')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

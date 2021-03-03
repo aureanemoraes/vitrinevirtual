@@ -30,7 +30,9 @@ class User extends Authenticatable
         'gender',
         'ethnicity',
         'civil_status',
-        'scholarity'
+        'scholarity',
+        'bussiness_name',
+        'bussiness_description'
     ];
 
     /**

@@ -16,7 +16,7 @@ class Product extends Model
         'payment_methods'
     ];
 
-    public function bussiness() {
-        return $this->belongsTo(Bussiness::class);
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

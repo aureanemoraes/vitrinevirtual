@@ -37,8 +37,34 @@
         <script type="text/javascript" src="https://unpkg.com/@coreui/coreui/dist/js/coreui.bundle.min.js"></script>
         @yield('js')
         <script>
-            let user = localStorage.getItem('user');
-            let user_token = localStorage.getItem('token');
+             user = localStorage.getItem('user');
+             user_token = localStorage.getItem('token');
+
+             if(user_token) {
+                 let auth_request = $.ajax({
+                     headers: {
+                         accept: 'application/json',
+                         authorization: `Bearer ${user_token}`
+                     },
+                     method: "get",
+                     url: "/api/users",
+                 });
+
+                 auth_request.done(function( data ) {
+                 });
+
+                 auth_request.fail(function( data ) {
+                     const currentURL = $(location).attr('href'); //jQuery solution
+
+                     localStorage.removeItem('token');
+                     localStorage.removeItem('user');
+                     if(currentURL != 'http://vitrine_virtual.test/login')
+                         window.location.replace("/login");
+
+                     console.log(data);
+                 });
+             }
+
             if(user) {
                 let nav_bar = `
                 <div class="col">
@@ -72,8 +98,8 @@
                     });
 
                     login_request.done(function( data ) {
-                        localStorage.removeItem('token', data.data.token);
-                        localStorage.removeItem('user', data.data.name);
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
                         window.location.replace("/login");
                     });
 

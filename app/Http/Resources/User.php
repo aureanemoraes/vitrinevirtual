@@ -33,6 +33,8 @@ class User extends JsonResource
             'ethnicity' => $this->ethnicity,
             'civil_status' => $this->civil_status,
             'scholarity' => $this->scholarity,
+            'bussiness_name' => $this->bussiness_name,
+            'bussiness_description' => $this->bussiness_description,
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),
             'addresses' => AddressResource::collection($this->addresses),
