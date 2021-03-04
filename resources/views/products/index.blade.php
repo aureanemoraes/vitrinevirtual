@@ -7,16 +7,16 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <a role="button" class="btn btn-primary btn-lg btn-block" href="/users/create">Novo usuário</a>
+                <a role="button" class="btn btn-primary btn-lg btn-block" href="/products/create">Novo produto</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="display" id="users_table">
+                    <table class="display" id="products_table">
                         <thead>
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">CPF</th>
+                            <th scope="col">Descrição</th>
                             <th scope="col">Ações</th>
                         </tr>
                         </thead>
@@ -37,7 +37,7 @@
             //var user = localStorage.getItem('user');
             var user_token = localStorage.getItem('token');
 
-            var table = $('#users_table').DataTable({
+            var table = $('#products_table').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Portuguese-Brasil.json"
                 },
@@ -47,7 +47,7 @@
                         accept: 'application/json',
                         authorization: `Bearer ${user_token}`
                     },
-                    url: "{{url('api/users')}}",
+                    url: "{{url('api/products')}}",
                     dataSrc: "data"
                 },
                 "columnDefs": [ {
@@ -58,25 +58,23 @@
                         <button type="button" class="btn btn-sm btn-danger">Remover</button>
                     `
                 },
-                {
-                    "targets": [ 0 ],
-                    "visible": false
-                }
+                    {
+                        "targets": [ 0 ],
+                        "visible": false
+                    }
                 ],
                 "columns": [
                     {"data": 'id'},
-                    {"data": 'name'},
-                    {'data': 'cpf'},
+                    {"data": 'main_name'},
+                    {'data': 'description'},
                 ],
-
-
             });
 
-            $('#users_table tbody').on( 'click', 'button', function () {
+            $('#products_table tbody').on( 'click', 'button', function () {
                 var data = table.row( $(this).parents('tr') ).data();
                 console.log(data);
 
-               window.location.replace('/users/edit/' + data.id);
+                window.location.replace('/products/edit/' + data.id);
 
             } );
 

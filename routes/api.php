@@ -29,4 +29,6 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('addresses', \App\Http\Controllers\AddressController::class);
     Route::resource('phones', \App\Http\Controllers\PhoneController::class);
     Route::resource('social_media', \App\Http\Controllers\SocialMediaController::class);
+    Route::resource('products', \App\Http\Controllers\ProductController::class);
+
 });

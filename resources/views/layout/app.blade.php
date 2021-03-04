@@ -69,9 +69,15 @@
                 let nav_bar = `
                 <div class="col">
                     <a class="navbar-brand" href="#">Navbar</a>
-                    <a class="nav-link" href="/users" id="users_menu" role="button">
-                        Usuários
-                    </a>
+                    <ul class="nav">
+                        <a class="nav-link" href="/users" id="users_menu" role="button">
+                            Usuários
+                        </a>
+                        <a class="nav-link" href="/products" id="products_menu" role="button">
+                            Produtos
+                        </a>
+                    </ul>
+
                 </div>
                 <div class="col" align="right">
                     ${user} <button class="btn btn-secondary" type="button" id="loggout_button">Sair</button>

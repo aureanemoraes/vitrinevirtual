@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         Canducci\Cep\Providers\CepServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -227,7 +228,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Cep' => Canducci\Cep\Facades\Cep::class,
-        'Endereco' => Canducci\Cep\Facades\Endereco::class
+        'Endereco' => Canducci\Cep\Facades\Endereco::class,
+        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 

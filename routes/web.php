@@ -37,3 +37,12 @@ Route::get('users/edit/{id}', function ($id) {
     return view('users.update');
 });
 
+Route::get('products', function () {
+    return view('products.index');
+});
+
+Route::get('products/create', function () {
+    return view('products.create');
+});
+
+

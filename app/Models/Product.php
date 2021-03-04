@@ -16,7 +16,15 @@ class Product extends Model
         'payment_methods'
     ];
 
+    protected $casts = [
+      'payment_methods' => 'array'
+    ];
+
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function images() {
+        return $this->belongsTo(Image::class);
     }
 }
