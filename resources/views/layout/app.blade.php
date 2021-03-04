@@ -73,7 +73,7 @@
                         <a class="nav-link" href="/users" id="users_menu" role="button">
                             Usuários
                         </a>
-                        <a class="nav-link" href="/products" id="products_menu" role="button">
+                        <a class="nav-link" href="/products/all" id="products_menu" role="button">
                             Produtos
                         </a>
                     </ul>

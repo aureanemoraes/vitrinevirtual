@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image;
+use App\Models\Image as ImageModel;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\Product as ProductResource;
+use Intervention\Image\Image;
 use Validator;
 
 class ProductController extends BaseController
@@ -21,21 +22,21 @@ class ProductController extends BaseController
     public function store(Request $request)
     {
         $input = $request->all();
-        //return $this->sendResponse($request->all(), 'Product created successfully.');
 
         $validator = Validator::make($input, [
             'main_name' => 'required|max:255',
             'description' => 'max:2048',
-            'price' => 'required|float',
+            'price' => 'required',
             'payment_methods' => 'array',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required',
+            'image.*' => 'mimes:jpg,png,jpeg,gif,svg'
         ]);
 
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $input['user_id'] = auth()->user->id;
+        $input['user_id'] = auth('api')->user()->id;
 
         $product = Product::create($input);
 
@@ -45,17 +46,19 @@ class ProductController extends BaseController
             $images = $request->file('image');
             foreach($images as $image) {
                 $input['imagename'] = time().'.'.$image->extension();
-                $destinationPath = public_path('/produtos');
-                $img = Image::make($image->path());
+                $destinationPath = public_path('/products');
+                $img = \Intervention\Image\Facades\Image::make($image->path());
                 $img->resize(500, 500, function ($constraint) {
                     $constraint->aspectRatio();
-                })->save($destinationPath.'/'.$input['imagename']);
-                $product->images()->save(new Image([
+                })->save($destinationPath.$input['imagename']);
+                $new_image = new ImageModel([
                     'path' => $input['imagename'] = time().'.'.$image->extension(),
                     'order' => $i
-                ]));
+                ]);
+                $new_image->product()->associate($product)->save();
                 $i++;
             }
+
         }
 
         return $this->sendResponse(new ProductResource($product), 'Product created successfully.');

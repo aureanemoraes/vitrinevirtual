@@ -10,6 +10,18 @@
         .disabled {
             pointer-events: none;
         }
+        img {
+            border: 1px solid black;
+            margin: 2px;
+        }
+        input[type="file"] {
+            margin-top: 5px;
+        }
+        .heading {
+            font-family: Montserrat;
+            font-size: 45px;
+            color: green;
+        }
     </style>
 @endsection
 
@@ -27,6 +39,12 @@
                         <label for="description">Descrição</label>
                         <textarea name="description" id="description" cols="30" rows="10" class="form-control" placeholder="Descreva seu produto..."></textarea>
                     </div>
+                    <div class="form-group" id="image_container">
+                        <label for="image">Imagens</label>
+                        <input type="file" class="form-control" id="image" name="image[]" multiple >
+                    </div>
+                    <div class="holder">
+                    </div>
                     <div class="form-group">
                         <label for="price">Preço</label>
                         <div class="input-group" id="price_container">
@@ -36,9 +54,38 @@
                             <input type="text" class="form-control" placeholder="Preço..." aria-label="price" aria-describedby="denheiros" id="price" name="price">
                         </div>
                     </div>
-                    <div class="form-group" id="image_container">
-                        <label for="image">Imagens</label>
-                        <input type="file" class="form-control" id="image" name="image[]" multiple >
+                    <div class="form-group" id="payment_methods_cotainer">
+                        <label>Formas de pagamento</label>
+                        <div class="form-check" >
+                            <input class="form-check-input" type="checkbox" value="Dinheiro" id="pm_money" name="payment_methods[]">
+                            <label class="form-check-label" for="pm_money">
+                                Dinheiro
+                            </label>
+                        </div>
+                        <div class="form-check" >
+                            <input class="form-check-input" type="checkbox" value="Cartão de crédito" id="pm_credit_card" name="payment_methods[]">
+                            <label class="form-check-label" for="pm_credit_card">
+                                Cartão de crédito
+                            </label>
+                        </div>
+                        <div class="form-check" >
+                            <input class="form-check-input" type="checkbox" value="Cartão de débito" id="pm_debit_card" name="payment_methods[]">
+                            <label class="form-check-label" for="pm_debit_card">
+                                Cartão de Débito
+                            </label>
+                        </div>
+                        <div class="form-check" >
+                            <input class="form-check-input" type="checkbox" value="PIX" id="pm_pix" name="payment_methods[]">
+                            <label class="form-check-label" for="pm_pix">
+                                PIX
+                            </label>
+                        </div>
+                        <div class="form-check" >
+                            <input class="form-check-input" type="checkbox" value="Transferência bancária" id="pm_bank_transfer" name="payment_methods[]">
+                            <label class="form-check-label" for="pm_bank_transfer">
+                                Transferência bancária
+                            </label>
+                        </div>
                     </div>
                     <div align="right" style="margin-top: 5px;">
                         <button type="submit" class="btn btn-success" id="submit_button"><span class="cil-check"></span> Salvar</button>
@@ -57,7 +104,8 @@
                 'main_name',
                 'description',
                 'image',
-                'price'
+                'price',
+                'payment_methods'
             ];
 
             user_token = localStorage.getItem('token');
@@ -68,67 +116,64 @@
                 </div>
             `;
 
+            $('#image').change(function(){
+                $('.holder').html("");
+                if(this.files.length > 0 && this.files.length <= 3) {
+                    for(let i=0; i<this.files.length; i++) {
+                        let file = this.files[i];
+                        if (file) {
+                            let reader = new FileReader();
+                            reader.onload = function(event){
+                                $('.holder').append(`<img src="${event.target.result}" alt="pic" style="width:80px;height: 80px;"/>`);
+                            }
+                            reader.readAsDataURL(file);
 
-            $('#new_product_form').submit((e) => {
+                        }
+                    }
+                } else {
+                    $('#image').val(null);
+
+                    alert('O máximo de imagens permitidas é 3.');
+                }
+
+            });
+
+        $('#new_product_form').submit(function(e) {
                 e.preventDefault();
-                const fm_product = new FormData(e.target);
-                const product_data = Object.fromEntries(fm_product.entries());
+                var formData = new FormData(this);
+                let TotalImages = $('#image')[0].files.length; //Total Images
+                for (let i = 0; i < TotalImages; i++) {
+                    formData.append('total_image', TotalImages);
+                }
 
-                console.log(product_data);
 
-                $('#submit_button').html(spinner_login);
-                $("#submit_button").attr("disabled", "disabled");
-
-                attributes.forEach(element => {
-                    $(`#invalid-feedback-${element}`).remove();
-                    $(`#${element}`).removeClass('is-invalid');
-                });
-
-                var login_request = $.ajax({
+                $.ajax({
                     headers: {
                         accept: 'application/json',
                         authorization: `Bearer ${user_token}`
                     },
-                    method: "POST",
+                    type:'POST',
                     url: "/api/products",
-                    data: product_data,
-
-                });
-
-                login_request.done(function( data ) {
-                    /*
-                    $('#submit_button').text('Salvar e continuar');
-                    $("#submit_button").removeAttr("disabled", "disabled");
-                    Swal.fire({
-                        title: 'Sucesso!',
-                        text: 'Produto registrado.',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-
-                    setTimeout(() => {
-                            window.location.replace("/products");
-                    },
-                    1000);
-
-                     */
-                });
-
-                login_request.fail(function( data ) {
-                    for (var key in data.responseJSON.data) {
-                        attributes.forEach(element => {
-                            if(key == element) {
-                                $(`#${element}`).addClass('is-invalid');
-                                $(`#${element}_container`).append(`
-                            <div class="invalid-feedback" id="invalid-feedback-${element}">
-                                ${data.responseJSON.data[element]}
-                            </div>`);
-                            }
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: (data) => {
+                        Swal.fire({
+                            title: 'Sucesso!',
+                            text: 'Produto registrado.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
                         });
-                    }
-                    $('#submit_button').text('Salvar e continuar');
-                    $("#submit_button").removeAttr("disabled", "disabled");
 
+                        setTimeout(() => {
+                                window.location.replace("/products/all");
+                            },
+                            1000);
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
                 });
             });
 

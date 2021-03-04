@@ -17,10 +17,11 @@ class Product extends JsonResource
     public function toArray($request)
     {
         return [
-            'main_name' => $this->id,
-            'description' => $this->name,
-            'price' => $this->email,
-            'payment_methods' => $this->social_name,
+            'id' => $this->id,
+            'main_name' => $this->main_name,
+            'description' => $this->description,
+            'price' => $this->price,
+            'payment_methods' => $this->payment_methods,
             'images' => ImageResource::collection($this->images)
         ];
     }

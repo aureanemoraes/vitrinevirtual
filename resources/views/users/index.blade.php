@@ -54,8 +54,9 @@
                     "targets": 3,
                     "data": null,
                     "defaultContent": `
-                        <button type="button" class="btn btn-sm btn-warning">Alterar</button>
-                        <button type="button" class="btn btn-sm btn-danger">Remover</button>
+                        <button type="button" class="btn btn-sm btn-info show" >Ver</button>
+                        <button type="button" class="btn btn-sm btn-warning edit">Alterar</button>
+                        <button type="button" class="btn btn-sm btn-danger delete">Remover</button>
                     `
                 },
                 {
@@ -72,12 +73,9 @@
 
             });
 
-            $('#users_table tbody').on( 'click', 'button', function () {
+            $('#users_table tbody ').on( 'click', '.edit', function () {
                 var data = table.row( $(this).parents('tr') ).data();
-                console.log(data);
-
-               window.location.replace('/users/edit/' + data.id);
-
+                window.location.replace('/users/edit/' + data.id);
             } );
 
         });

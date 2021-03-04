@@ -13,11 +13,13 @@ class Product extends Model
         'main_name',
         'description',
         'price',
-        'payment_methods'
+        'payment_methods',
+        'user_id'
     ];
 
     protected $casts = [
-      'payment_methods' => 'array'
+      'payment_methods' => 'array',
+        'price' => 'float'
     ];
 
     public function user() {
@@ -25,6 +27,6 @@ class Product extends Model
     }
 
     public function images() {
-        return $this->belongsTo(Image::class);
+        return $this->hasMany(Image::class);
     }
 }

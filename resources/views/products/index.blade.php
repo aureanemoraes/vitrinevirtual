@@ -35,7 +35,7 @@
     <script>
         $(document).ready(function () {
             //var user = localStorage.getItem('user');
-            var user_token = localStorage.getItem('token');
+            user_token = localStorage.getItem('token');
 
             var table = $('#products_table').DataTable({
                 "language": {
@@ -47,15 +47,17 @@
                         accept: 'application/json',
                         authorization: `Bearer ${user_token}`
                     },
-                    url: "{{url('api/products')}}",
+
+                    url: "/api/products",
                     dataSrc: "data"
                 },
                 "columnDefs": [ {
                     "targets": 3,
                     "data": null,
                     "defaultContent": `
-                        <button type="button" class="btn btn-sm btn-warning">Alterar</button>
-                        <button type="button" class="btn btn-sm btn-danger">Remover</button>
+                        <button type="button" class="btn btn-sm btn-info show" >Ver</button>
+                        <button type="button" class="btn btn-sm btn-warning edit">Alterar</button>
+                        <button type="button" class="btn btn-sm btn-danger delete">Remover</button>
                     `
                 },
                     {
@@ -70,12 +72,9 @@
                 ],
             });
 
-            $('#products_table tbody').on( 'click', 'button', function () {
+            $('#products_table tbody ').on( 'click', '.edit', function () {
                 var data = table.row( $(this).parents('tr') ).data();
-                console.log(data);
-
-                window.location.replace('/products/edit/' + data.id);
-
+                window.location.replace('/users/edit/' + data.id);
             } );
 
         });
