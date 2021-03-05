@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [\App\Http\Controllers\RegisterController::class, 'register']);
 Route::post('login', [\App\Http\Controllers\RegisterController::class, 'login']);
+Route::get('public/products', [\App\Http\Controllers\ProductController::class, 'public_index']);
+
 
 Route::middleware('auth:api')->group( function () {
     Route::post('logout', [\App\Http\Controllers\RegisterController::class, 'logout']);
@@ -30,5 +32,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('phones', \App\Http\Controllers\PhoneController::class);
     Route::resource('social_media', \App\Http\Controllers\SocialMediaController::class);
     Route::resource('products', \App\Http\Controllers\ProductController::class);
+    Route::resource('images', \App\Http\Controllers\ImageController::class);
+
 
 });

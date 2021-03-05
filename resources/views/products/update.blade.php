@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Vitrine Virtual - Novo produto')
+@section('title', 'Vitrine Virtual - Alterar produto')
 
 @section('css')
     <style>
@@ -30,7 +30,8 @@
         <div class="card">
             <div class="card-body">
                 <h2>Novo produto</h2>
-                <form id="new_product_form" enctype="multipart/form-data" method="POST">
+                <form id="update_product_form" enctype="multipart/form-data">
+                    <input type="hidden" name="_method" value="PUT">
                     <div class="form-group" id="main_name_container">
                         <label for="main_name">Nome</label>
                         <input type="text" class="form-control" id="main_name" name="main_name" placeholder="Nome do produto...">
@@ -43,8 +44,15 @@
                         <label for="image">Imagens</label>
                         <input type="file" class="form-control" id="image" name="image[]" multiple >
                     </div>
-                    <div class="holder">
-                    </div>
+                    <div class="holder"></div>
+                    <table class="table" id="image_table">
+                        <thead>
+                            <th>Imagem</th>
+                            <th>Ordem</th>
+                            <th>Ações</th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                     <div class="form-group">
                         <label for="price">Preço</label>
                         <div class="input-group" id="price_container">
@@ -99,6 +107,28 @@
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+        let product;
+
+        let total_images;
+
+        function deleteImage(id) {
+            $.ajax({
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${user_token}`
+                },
+                method: "DELETE",
+                url: "/api/images/" + id,
+                success: function(data) {
+                    total_images -= 1;
+                    $(`#image_${id}`).remove();
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+
         $(function() {
             var attributes = [
                 'main_name',
@@ -108,7 +138,64 @@
                 'payment_methods'
             ];
 
+            var image_attributes = [
+                'path',
+                'order',
+            ];
+
+
             user_token = localStorage.getItem('token');
+
+            // Alimentando com os dados do usuário
+            const currentURL = $(location).attr('href'); //jQuery solution
+            const id = currentURL.substring(currentURL.lastIndexOf('/') + 1);
+
+            // Buscar dados do usuários
+            var login_request = $.ajax({
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${user_token}`
+                },
+                method: "GET",
+                url: "/api/products/" + id,
+            });
+
+            login_request.done(function( data ) {
+                product = data.data;
+                total_images = product['images'].length;
+                for(u in product) {
+                    attributes.forEach(element => {
+                        if(element == u) {
+                            $(`#${element}`).val(product[u]);;
+                        }
+                    })
+                }
+                if(total_images > 0) {
+                    product['images'].forEach(element => {
+                        $('#image_table tbody').append(`
+                            <tr id="image_${element['id']}">
+                                <td><img src="/products/${element['path']}" alt="pic" style="width:80px;height: 80px;"/></td>
+                                <td>${element['order']}</td>
+                                <td><button type="button" class="btn btn-danger" onclick="deleteImage('${element['id']}')">Remover</button></td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                if(product['payment_methods'].length > 0) {
+                    let checkboxes = $('.form-check-input');
+                    product['payment_methods'].forEach(element => {
+                        for(a of checkboxes) {
+                            if(a.value == element) {
+                                a.checked = true;
+                            }
+                        }
+                    });
+                }
+            });
+
+            login_request.fail(function( data ) {
+            });
 
             var spinner_login = `
                 <div class="spinner-border spinner-border-sm" role="status">
@@ -119,31 +206,37 @@
             $('#image').change(function(){
                 $('.holder').html("");
                 if(this.files.length > 0 && this.files.length <= 3) {
-                    for(let i=0; i<this.files.length; i++) {
-                        let file = this.files[i];
-                        if (file) {
-                            let reader = new FileReader();
-                            reader.onload = function(event){
-                                $('.holder').append(`<img src="${event.target.result}" alt="pic" style="width:80px;height: 80px;"/>`);
-                            }
-                            reader.readAsDataURL(file);
+                    avaliable = 3 - total_images ;
+                    avaliable = avaliable - this.files.length
+                    if( avaliable < 0) {
+                        $('#image').val(null);
+                        alert('O máximo de imagens permitidas é 3.');
+                    } else {
+                        for(let i=0; i<this.files.length; i++) {
+                            let file = this.files[i];
+                            if (file) {
+                                let reader = new FileReader();
+                                reader.onload = function(event){
+                                    $('.holder').append(`<img src="${event.target.result}" alt="pic" style="width:80px;height: 80px;"/>`);
+                                }
+                                reader.readAsDataURL(file);
 
+                            }
                         }
                     }
                 } else {
                     $('#image').val(null);
-
                     alert('O máximo de imagens permitidas é 3.');
                 }
 
             });
 
-        $('#new_product_form').submit(function(e) {
+            $('#update_product_form').submit(function(e) {
                 e.preventDefault();
-                var formData = new FormData(this);
+                var formUpdate = new FormData(this);
                 let TotalImages = $('#image')[0].files.length; //Total Images
                 for (let i = 0; i < TotalImages; i++) {
-                    formData.append('total_image', TotalImages);
+                    formUpdate.append('total_image', TotalImages);
                 }
 
 
@@ -152,9 +245,9 @@
                         accept: 'application/json',
                         authorization: `Bearer ${user_token}`
                     },
-                    type:'POST',
-                    url: "/api/products",
-                    data: formData,
+                    type:'post',
+                    url: "/api/products/" + id,
+                    data: formUpdate,
                     cache: false,
                     contentType: false,
                     processData: false,
@@ -172,24 +265,11 @@
                             1000);
                     },
                     error: function(data){
-                        for (var key in data.responseJSON.data) {
-                            attributes.forEach(element => {
-                                if(key == element) {
-                                    $(`#${element}`).addClass('is-invalid');
-                                    $(`#${element}_container`).append(`
-                            <div class="invalid-feedback" id="invalid-feedback-${element}">
-                                ${data.responseJSON.data[element]}
-                            </div>`);
-                                }
-                            });
-                        }
-                        $('#address_submit_button').text('Salvar');
-                        $("#address_submit_button").removeAttr("disabled", "disabled");
+                        console.log(data);
                     }
                 });
             });
             $('#price').mask('000 000 000 000 000.00', {reverse: true});
-
         });
     </script>
 @endsection

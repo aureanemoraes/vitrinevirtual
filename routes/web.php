@@ -37,6 +37,10 @@ Route::get('/users/create', function () {
     return view('users.create');
 });
 
+Route::get('/products/edit/{id}', function ($id) {
+    return view('products.update');
+});
+
 Route::get('/users/edit/{id}', function ($id) {
     return view('users.update');
 });
@@ -45,4 +49,7 @@ Route::get('/products/create', function () {
     return view('products.create');
 });
 
+Route::get('/vitrine', function() {
+    return view('all-products');
+});
 

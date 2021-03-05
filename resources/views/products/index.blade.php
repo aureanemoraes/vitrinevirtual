@@ -33,9 +33,12 @@
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 
     <script>
+
         $(document).ready(function () {
             //var user = localStorage.getItem('user');
             user_token = localStorage.getItem('token');
+
+
 
             var table = $('#products_table').DataTable({
                 "language": {
@@ -73,9 +76,28 @@
             });
 
             $('#products_table tbody ').on( 'click', '.edit', function () {
-                var data = table.row( $(this).parents('tr') ).data();
-                window.location.replace('/users/edit/' + data.id);
+                let data = table.row( $(this).parents('tr') ).data();
+                window.location.replace('/products/edit/' + data.id);
             } );
+
+            $('#products_table tbody ').on( 'click', '.delete', function () {
+                let data = table.row( $(this).parents('tr') ).data();
+                $.ajax({
+                    headers: {
+                        accept: 'application/json',
+                        authorization: `Bearer ${user_token}`
+                    },
+                    method: "DELETE",
+                    url: "/api/products/" + data.id,
+                    success: function(data) {
+                        window.location.replace('/products/all');
+
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            });
 
         });
     </script>

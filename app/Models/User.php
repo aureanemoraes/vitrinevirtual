@@ -72,8 +72,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Phone::class);
     }
 
-    public function bussiness() {
-        return $this->hasOne(Bussiness::class);
+    public function products() {
+        return $this->hasOne(Product::class);
     }
 
     public function getDefaultNameAttribute() {
