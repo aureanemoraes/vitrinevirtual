@@ -23,8 +23,7 @@ class Product extends JsonResource
             'price' => $this->price,
             'payment_methods' => $this->payment_methods,
             'images' => ImageResource::collection($this->images),
-            'user_id' => $this->user->id,
-            'user_default_name' => $this->user->default_name
+            'user' => $this->user
         ];
     }
 }

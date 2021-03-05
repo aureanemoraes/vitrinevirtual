@@ -45,6 +45,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = [
+        'default_name'
+    ];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -73,13 +77,12 @@ class User extends Authenticatable
     }
 
     public function products() {
-        return $this->hasOne(Product::class);
+        return $this->hasMany(Product::class);
     }
 
     public function getDefaultNameAttribute() {
-        $social_name = $this->attributes['social_name'];
-        if(isset($social_name)) {
-            return $social_name;
+        if($this->attributes['social_name'] != null) {
+            return $this->attributes['social_name'];
         } else {
             return $this->attributes['name'];
         }

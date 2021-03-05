@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Image as ImageModel;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Product as ProductResource;
 use Illuminate\Support\Str;
@@ -28,9 +29,28 @@ class ProductController extends BaseController
     }
 
     public function public_index() {
-        $products = Product::all();
-        return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
+        //$products = Product::all();
+        //return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
+        $produts = User::with('products.images')->get();
+        return $produts;
+    }
 
+    public function public_index_by_user($user_id) {
+        //$products = Product::all();
+        //return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
+        $produts = User::with('products.images')->where('id', $user_id)->get();
+        return $produts;
+    }
+
+    public function public_show($id)
+    {
+        $product = Product::with('user.phones')->find($id);
+
+        if (is_null($product)) {
+            return $this->sendError('Product not found.');
+        }
+
+        return $this->sendResponse(new ProductResource($product), 'Product retrieved successfully.');
     }
 
     public function store(Request $request)

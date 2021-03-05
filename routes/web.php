@@ -53,3 +53,10 @@ Route::get('/vitrine', function() {
     return view('all-products');
 });
 
+Route::get('/vitrine/vendedora/{user_id}', function($user_id) {
+    return view('products-user');
+});
+
+Route::get('/vitrine/produto/{product_id}', function($product_id) {
+    return view('product');
+});

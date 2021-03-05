@@ -13,6 +13,10 @@
         color: white;
     }
 
+    .lis-group-item:hover {
+        color: cadetblue;
+    }
+
     </style>
 @endsection
 
@@ -37,7 +41,7 @@
 
         <section style="margin: 20px;" align="center">
             <h3>Nossas vendedoras</h3>
-            <div class="list-group" >
+            <div class="list-group">
             </div>
         </section>
 
@@ -56,46 +60,55 @@
                 method: "GET",
                 url: "/api/public/products/",
                 success: function(data) {
-                    let products = data.data;
-                    console.log(products);
-                    if(products.length > 0) {
-                        for(let i=0; i<products.length; i++) {
-                            if (i == 0) {
-                                $('.carousel-indicators').append(`
+                    let users = data;
+                    let products = [];
+                    for(user of users) {
+                        if(user.products) {
+                            for(product of user.products) {
+                                products.push(product);
+                            }
+                        }
+                    }
+
+                    let i = 0;
+                    console.log(users, products);
+                    for(product of products) {
+                       if(product.images.length > 0) {
+                           if(i == 0) {
+                               $('.carousel-indicators').append(`
                                     <li data-target="#carouselProducts" data-slide-to="${i}" class="active"></li>
                                 `);
-                                $('.carousel-inner').append(`
+                               $('.carousel-inner').append(`
                                 <div class="carousel-item active" align="center">
-                                    <img src="/products/${products[i]['images'][0]['path']}" style="width: 500px; height: 500px;"
-                                        class="d-block "
-                                    />
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5>${products[i]['main_name']}</h5>
-                                        <p>${products[i]['description']} <a href="/public/products/${products[i]['id']}">Mais informações</a></p>
+                                <img src="/products/${product.images[0].path}" style="width: 500px; height: 500px;" class="d-block "/>
+                                <div class="carousel-caption d-md-block">
+                                        <h5>${product.main_name}</h5>
+                                        <p>${product.description} <a href="/vitrine/produto/${product.id}">Mais informações</a></p>
                                     </div>
                                 </div>
-                                `);
-                            } else {
-                                $('.carousel-indicators').append(`
+                            `);
+                           }
+                           else {
+                               $('.carousel-indicators').append(`
                                     <li data-target="#carouselProducts" data-slide-to="${i}"></li>
                                 `);
-                                $('.carousel-inner').append(`
-                                <div class="carousel-item" align="center">
-                                    <img src="/products/${products[i]['images'][0]['path']}" style="width: 500px; height: 500px;"
-                                        class="d-block "
-                                    />
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5>${products[i]['main_name']}</h5>
-                                        <p>${products[i]['description']} <a href="/public/products/${products[i]['id']}">Mais informações</a></p>
+                               $('.carousel-inner').append(`
+                                    <div class="carousel-item"  align="center">
+                                    <img src="/products/${product.images[0].path}" style="width: 500px; height: 500px;" class="d-block "/>
+                                    <div class="carousel-caption d-md-block">
+                                            <h5>${product.main_name}</h5>
+                                            <p>${product.description} <a href="/vitrine/produto/${product.id}">Mais informações</a></p>
+                                        </div>
                                     </div>
-                                </div>
                                 `);
-                            }
-                            $('.list-group').append(`
-                                <a href="#" class="list-group-item list-group-item-action">${products[i]['user_default_name']}</a>
-                            `);
-                        }
-
+                           }
+                           i++;
+                       }
+                    }
+                    for(user of users) {
+                        $('.list-group').append(`
+                            <a href="/vitrine/vendedora/${user.id}" class="list-group-item list-group-item-action">${user.default_name}</a>
+                        `);
                     }
                 },
                 error: function(data) {
