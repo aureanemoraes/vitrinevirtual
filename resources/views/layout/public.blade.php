@@ -10,10 +10,14 @@
     <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css">
     <link rel="stylesheet" href="https://unpkg.com/@coreui/icons@2.0.0-beta.3/css/free.min.css">
     <title>@yield('title')</title>
-    @yield('css')
-
+    <style>
+        @yield('css')
+        .c-main {
+            padding-top: 0;
+        }
+    </style>
 </head>
-<body class="c-app" background="{{asset('assets/girls.png')}}">
+<body class="c-app">
 <div class="c-wrapper">
     <header class="c-header navbar navbar-expand-lg navbar-light bg-light">
     </header>
