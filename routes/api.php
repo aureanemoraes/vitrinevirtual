@@ -19,6 +19,8 @@ Route::post('login', [\App\Http\Controllers\RegisterController::class, 'login'])
 Route::get('public/products', [\App\Http\Controllers\ProductController::class, 'public_index']);
 Route::get('public/products/user/{id}', [\App\Http\Controllers\ProductController::class, 'public_index_by_user']);
 Route::get('public/products/{id}', [\App\Http\Controllers\ProductController::class, 'public_show']);
+Route::get('public/users', [\App\Http\Controllers\UserController::class, 'public_index']);
+
 
 
 Route::middleware('auth:api')->group( function () {

@@ -46,7 +46,8 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'default_name'
+        'default_name',
+        'products_count'
     ];
 
     /**
@@ -86,5 +87,10 @@ class User extends Authenticatable
         } else {
             return $this->attributes['name'];
         }
+    }
+
+    public function getProductsCountAttribute() {
+        $a = count($this->products);
+        return $a;
     }
 }

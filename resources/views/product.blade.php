@@ -3,61 +3,49 @@
 @section('title', 'Vitrine Virtual')
 
 @section('css')
-    <style>
-        .list-group {
-            background: black;
-            opacity: 0.7;
-
-        }
-        .list-group-item, h3 {
-            color: white;
-        }
-
-        .lis-group-item:hover {
-            color: cadetblue;
-        }
-
-        .card {
-            margin: 20px;
-            background: white;
-            opacity: 0.7;
-            color:black;
-        }
-
-    </style>
 @endsection
 
 @section('content')
-    <div class="container">
-        <h2 id="product_name"></h2>
-        <h3 id="user_name"></h3>
-        <div class="cd-example">
-            <div id="carouselProducts" class="carousel slide" data-ride="carousel" >
-                <ol class="carousel-indicators">
-                </ol>
-                <div class="carousel-inner">
-                </div>
-                <a class="carousel-control-prev" href="#carouselProducts" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselProducts" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <tbody></tbody>
-                    </table>
+    <div class="container product">
+        <div class="row">
+            <div class="col">
+                <div id="carouselProduct" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                    </ol>
+                    <div class="carousel-inner">
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselProduct" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselProduct" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
             </div>
-        </div>
+            <div class="col">
+                <div class="card" >
+                    <div class="card-header">
+                        <h3 class="card-title" id="card_title"></h3>
+                    </div>
+                    <div class="card-body">
 
+                        <p class="bg-primary price" id="product_price"></p>
+                        <div class="table-responsive-sm">
+                            <table class="table table-borderless">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="card-footer" id="card_footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -79,60 +67,71 @@
                     let user = product.user;
                     let i = 0;
                     console.log(product, user);
-                    $('#product_name').html(`${product.main_name}`);
-                    $('#user_name').html(`Por <strong>${user.default_name}</strong>`);
+
+                    $('#card_title').html(product.main_name);
+                    $('#product_price').html(`R$ ${product.price}`);
 
                     if(product.images.length > 0) {
-                        if(i == 0) {
-                            $('.carousel-indicators').append(`
-                                <li data-target="#carouselProducts" data-slide-to="${i}" class="active"></li>
+                        for(image of product.images) {
+                            if(i == 0) {
+                                $('.carousel-indicators').append(`
+                                    <li data-target="#carouselProduct" data-slide-to="${i}" class="active"></li>
+                                `);
+                                $('.carousel-inner').append(`
+                                <div class="carousel-item active" align="center" >
+                                <img src="/products/${image.path}" style="width: 500px; height: 500px;" class="d-block "/>
                             `);
-                            $('.carousel-inner').append(`
-                                <div class="carousel-item active" align="center">
-                                <img src="/products/${product.images[0].path}" style="width: 500px; height: 500px;" class="d-block "/>
+                            }
+                            else {
+                                $('.carousel-indicators').append(`
+                                    <li data-target="#carouselProduct" data-slide-to="${i}" ></li>
+                                `);
+                                $('.carousel-inner').append(`
+                                <div class="carousel-item " align="center" >
+                                <img src="/products/${image.path}" style="width: 500px; height: 500px;" class="d-block "/>
                             `);
+                            }
+                            i++;
                         }
-                        else {
-                            $('.carousel-indicators').append(`
-                                <li data-target="#carouselProducts" data-slide-to="${i}"></li>
-                            `);
-                            $('.carousel-inner').append(`
-                                <div class="carousel-item"  align="center">
-                                <img src="/products/${product.images[0].path}" style="width: 500px; height: 500px;" class="d-block "/>
-                            `);
-                        }
-                        i++;
                     }
 
                     $('tbody').append(`
                         <tr>
-                            <th scope="col">Nome</th>
-                            <td>${product.main_name}</td>
-                        </tr>
-                        <tr>
                             <th scope="col">Descrição</th>
-                            <td>${product.description}</td>
-                        </tr>
-                        <tr>
-                            <th scope="col">Preço</th>
-                            <td>${product.price}</td>
+                            <td><em>${product.description}</em></td>
                         </tr>
                         <tr>
                             <th scope="col">Formas de pagamento</th>
-                            <td>${product.payment_methods}</td>
+                            <td>
+                                <ul class="list-group list-group-flush" id="pm">
+                                </ul>
+                            </td>
                         </tr>
-                        <tr id="phones">
-                            <th scope="col">Contato</th>
+                        <tr>
+                            <th scope="col">Contatos</th>
+                            <td>
+                                <ul class="list-group list-group-flush" id="phones">
+                                </ul>
+                            </td>
                         </tr>
                     `);
+
+                    for(pm of product.payment_methods) {
+                        $('#pm').append(`
+                          <li class="list-group-item">${pm}</li>
+                        `);
+                    }
 
                     for(phone of user.phones) {
                         var formatted_phone = phone.number_phone.replace(/[^0-9\.]/g, '');
                         $('#phones').append(`
-                            <td>
-                                <a href="https://api.whatsapp.com/send?phone=55${formatted_phone}">${phone.number_phone}</a>
-                            </td>
+                          <a href="tel:55${formatted_phone}" class="list-group-item list-group-item-action">${phone.number_phone}</a>
                         `);
+                        if(phone.is_whatsapp) {
+                            $('#card_footer').append(`
+                                <a href="https://api.whatsapp.com/send?phone=55${formatted_phone}" type="button" class="btn btn-success"><i class="cib-whatsapp"></i> Falar no WhatsApp ${phone.number_phone}</a>
+                            `);
+                        }
                     }
                 },
                 error: function(data) {
@@ -141,5 +140,6 @@
             });
         });
     </script>
+
 @endsection
 

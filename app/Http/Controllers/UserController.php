@@ -19,6 +19,13 @@ class UserController extends BaseController
         return $this->sendResponse(UserResource::collection($users), 'Users retrieved successfully.');
     }
 
+    public function public_index()
+    {
+        $users = User::where('is_admin', 0)->get();
+
+        return $this->sendResponse(UserResource::collection($users), 'Users retrieved successfully.');
+    }
+
     public function store(Request $request)
     {
         $input = $request->all();

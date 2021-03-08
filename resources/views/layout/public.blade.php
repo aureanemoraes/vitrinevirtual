@@ -15,11 +15,72 @@
         .c-main {
             padding-top: 0;
         }
+
+        .container {
+            margin-top: 20px;
+            padding: 50px;
+        }
+
+        .card-deck{
+            margin-top: 10px;
+            margin-left: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-gap: .5rem;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 40vh;
+            object-fit: cover;
+        }
+
+
+        .carousel img {
+            width: 100%;
+            object-fit: cover;
+            max-height: 400px;
+        }
+
+        .c-body {
+            background: white;
+        }
+
+        .card {
+            border: none;
+            height: 100%;
+        }
+
+        .price {
+            width: fit-content;
+            font-weight: bold;
+            padding: 4px;
+        }
+
+
+        .table th {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+
     </style>
 </head>
 <body class="c-app">
 <div class="c-wrapper">
     <header class="c-header navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Vitrine Arte Mulher</a>
+        <ul class="nav">
+            <a class="nav-link" href="/vitrine" id="users_menu" role="button">
+                Todos os produtos
+            </a>
+            <a class="nav-link" href="/vitrine/empreendedoras" id="products_menu" role="button">
+                Nossas empreendedoras
+            </a>
+            <a class="nav-link" href="/login" id="products_menu" role="button">
+                Entrar
+            </a>
+        </ul>
     </header>
     <div class="c-body">
         <main class="c-main">

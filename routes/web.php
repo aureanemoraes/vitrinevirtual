@@ -53,9 +53,10 @@ Route::get('/vitrine', function() {
     return view('all-products');
 });
 
-Route::get('/vitrine/empreendoras/{user_id}', function($user_id) {
-    return view('products-user');
+Route::get('/vitrine/empreendedoras', function() {
+    return view('bussinesses-w');
 });
+
 
 Route::get('/vitrine/empreendedoras/{user_id}', function($user_id) {
     return view('products-user');
