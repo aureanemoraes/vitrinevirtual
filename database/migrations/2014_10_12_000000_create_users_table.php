@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
             $table->integer('scholarity');
             $table->string('bussiness_name')->nullable();
             $table->longText('bussiness_description')->nullable();
+            $table->string('image_path')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

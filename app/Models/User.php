@@ -34,7 +34,7 @@ class User extends Authenticatable
         'scholarity',
         'bussiness_name',
         'bussiness_description',
-        'products_count'
+        'image_path',
     ];
 
     /**

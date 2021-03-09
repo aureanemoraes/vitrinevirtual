@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Validator;
 use App\Http\Resources\User as UserResource;
 
@@ -45,6 +46,7 @@ class UserController extends BaseController
             'scholarity' => 'required|integer',
             'bussiness_name' => 'max:255',
             'bussiness_description' => 'max:2048',
+            'image' => 'mimes:jpg,png,jpeg,gif,svg'
         ]);
 
         if($validator->fails()){
@@ -53,6 +55,24 @@ class UserController extends BaseController
 
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+
+        // Tratando imagem
+        $image = $request->file('image');
+        $input['imagename'] = time() . '-' . Str::random(40) . '.'. $image->extension();
+        $destinationPath = public_path('profile');
+        $img = \Intervention\Image\Facades\Image::make($image->path());
+        $height = $img->height();
+        $width = $img->width();
+        if($height > 200 || $width > 200) {
+            $img->resize(200, 200, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPath. '\\' . $input['imagename']);
+        } else {
+            $img->save($destinationPath. '\\' . $input['imagename']);
+        }
+
+        $user->image_path = $input['imagename'];
+        $user->save();
 
         return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
@@ -91,6 +111,7 @@ class UserController extends BaseController
             'scholarity' => 'required|integer',
             'bussiness_name' => 'max:255',
             'bussiness_description' => 'max:2048',
+            'image' => 'mimes:jpg,png,jpeg,gif,svg'
         ]);
 
         if($validator->fails()){
@@ -99,6 +120,53 @@ class UserController extends BaseController
 
         $user->fill($input);
         $user->save();
+
+        // Tratando imagem
+        // Verificando se já existe uma imagem de perfil
+        // Se não existir, armazenar a imagem
+        // Se existir, excluir o arquivo da imagem, salvar a nova imagem e armazenar o novo caminho
+        if($request->hasFile('image')) {
+            if(isset($user->image_path)) {
+                $image_path = public_path('/profile/') . $user->image_path;
+                if (file_exists($image_path))
+                    @unlink($image_path);
+
+                $image = $request->file('image');
+                $input['imagename'] = time() . '-' . Str::random(40) . '.'. $image->extension();
+                $destinationPath = public_path('profile');
+                $img = \Intervention\Image\Facades\Image::make($image->path());
+                $height = $img->height();
+                $width = $img->width();
+                if($height > 200 || $width > 200) {
+                    $img->resize(200, 200, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath. '\\' . $input['imagename']);
+                } else {
+                    $img->save($destinationPath. '\\' . $input['imagename']);
+                }
+
+                $user->image_path = $input['imagename'];
+                $user->save();
+
+            } else {
+                $image = $request->file('image');
+                $input['imagename'] = time() . '-' . Str::random(40) . '.'. $image->extension();
+                $destinationPath = public_path('profile');
+                $img = \Intervention\Image\Facades\Image::make($image->path());
+                $height = $img->height();
+                $width = $img->width();
+                if($height > 200 || $width > 200) {
+                    $img->resize(200, 200, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath. '\\' . $input['imagename']);
+                } else {
+                    $img->save($destinationPath. '\\' . $input['imagename']);
+                }
+
+                $user->image_path = $input['imagename'];
+                $user->save();
+            }
+        }
 
         return $this->sendResponse(new UserResource($user), 'User updated successfully.');
     }

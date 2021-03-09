@@ -3,6 +3,26 @@
 @section('title', 'Vitrine Virtual')
 
 @section('css')
+    .c-body {
+    background: white;
+    }
+
+    .card {
+    border: none;
+    height: 100%;
+    }
+
+    .price {
+    width: fit-content;
+    font-weight: bold;
+    padding: 4px;
+    }
+
+
+    .table th {
+    text-align: left;
+    vertical-align: middle;
+    }
 @endsection
 
 @section('content')

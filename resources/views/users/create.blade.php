@@ -127,6 +127,14 @@
                                 </div>
                             </section>
                             <section>
+                                <h3>Imagem de perfil</h3>
+                                <div class="form-group" id="image_container">
+                                    <input type="file" class="form-control" id="image" name="image">
+                                </div>
+                                <div class="holder">
+                                </div>
+                            </section>
+                            <section>
                                 <h3>Dados do empreendimento</h3>
                                 <div class="form-group" id="bussiness_name_container">
                                     <label for="bussiness_name">Nome</label>
@@ -596,8 +604,7 @@
 
             $('#new_user_form').submit((e) => {
                 e.preventDefault();
-                const data = new FormData(e.target);
-                const info = Object.fromEntries(data.entries());
+                const info = new FormData(e.target);
 
                 $('#submit_button').html(spinner_login);
                 $("#submit_button").attr("disabled", "disabled");
@@ -615,6 +622,9 @@
                     method: "POST",
                     url: "/api/users",
                     data: info,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                 });
 
                 login_request.done(function( data ) {
@@ -727,6 +737,19 @@
                         window.location.replace("/users");
                     },
                 1000);
+            });
+
+            // Images
+            $('#image').change(function(){
+                $('.holder').html("");
+                let file = this.files[0];
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function(event){
+                        $('.holder').append(`<img src="${event.target.result}" alt="pic" style="width:80px;height: 80px;"/>`);
+                    }
+                    reader.readAsDataURL(file);
+                }
             });
 
         });

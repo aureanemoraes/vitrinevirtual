@@ -12,57 +12,6 @@
     <title>@yield('title')</title>
     <style>
         @yield('css')
-        .c-main {
-            padding-top: 0;
-        }
-
-        .container {
-            margin-top: 20px;
-            padding: 50px;
-        }
-
-        .card-deck{
-            margin-top: 10px;
-            margin-left: auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            grid-gap: .5rem;
-        }
-
-        .card-img-top {
-            width: 100%;
-            height: 40vh;
-            object-fit: cover;
-        }
-
-
-        .carousel img {
-            width: 100%;
-            object-fit: cover;
-            max-height: 400px;
-        }
-
-        .c-body {
-            background: white;
-        }
-
-        .card {
-            border: none;
-            height: 100%;
-        }
-
-        .price {
-            width: fit-content;
-            font-weight: bold;
-            padding: 4px;
-        }
-
-
-        .table th {
-            text-align: left;
-            vertical-align: middle;
-        }
-
 
     </style>
 </head>

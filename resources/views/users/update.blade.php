@@ -370,6 +370,42 @@
                 <option value="10">Nível superior completo</option>
             `;
 
+        function deletePhone(phone_id) {
+            var login_request = $.ajax({
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${user_token}`
+                },
+                method: "DELETE",
+                url: "/api/phones/" + phone_id,
+            });
+
+            login_request.done(function( data ) {
+                $('#phone_' + phone_id).remove();
+            });
+
+            login_request.fail(function( data ) {
+            });
+        }
+
+        function deleteSm(sm_id) {
+            var login_request = $.ajax({
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${user_token}`
+                },
+                method: "DELETE",
+                url: "/api/social_media/" + sm_id,
+            });
+
+            login_request.done(function( data ) {
+                $('#sm_' + sm_id).remove();
+            });
+
+            login_request.fail(function( data ) {
+            });
+        }
+
         const currentURL = $(location).attr('href'); //jQuery solution
         const id = currentURL.substring(currentURL.lastIndexOf('/') + 1);
 
@@ -404,28 +440,37 @@
                     }
                 });
             }
+            // Telefones
+            if(user['phones'].length > 0) {
+                user['phones'].forEach(element_phone => {
+                    $('#phone_list').append(`
+                        <tr id="phone_${element_phone.id}">
+                            <td>${element_phone.number_phone}</td>
+                            <td>${element_phone.type_phone}</td>
+                            <td>${element_phone.is_whatsapp}</td>
+                            <td><button type="button" class="btn btn-sm btn-danger" onclick="deletePhone(${element_phone.id})">Remover</button></td>
+                        </tr>
+                    `);
+                });
+            }
+
+            // Redes sociais
+            if(user['social_media'].length > 0) {
+                user['social_media'].forEach(element_sm => {
+                    $('#social_media_list').append(`
+                            <tr id="sm_${element_sm.id}">
+                                <td>${element_sm.sm_name}</td>
+                                <td>${element_sm.sm_url}</td>
+                                <td><button type="button" class="btn btn-sm btn-danger" onclick="deleteSm(${element_sm.id})">Remover</button></td>
+                            </tr>
+                        `);
+                });
+            }
         });
 
         login_request.fail(function( data ) {
         });
 
-        function deletePhone(phone_id) {
-            var login_request = $.ajax({
-                headers: {
-                    accept: 'application/json',
-                    authorization: `Bearer ${user_token}`
-                },
-                method: "DELETE",
-                url: "/api/phones/" + phone_id,
-            });
-
-            login_request.done(function( data ) {
-                $('#phone_' + phone_id).remove();
-            });
-
-            login_request.fail(function( data ) {
-            });
-        }
         $(function() {
 
             $('#uf_rg').append(uf_options);
@@ -462,7 +507,7 @@
                     $('#zip_code_button').text('Buscar');
 
                     $('#public_place').val(data.logradouro);
-                    $('#neighborhood').val(data.localidade);
+                    $('#neighborhood').val(data.bairro);
                     $('#uf').val(data.uf);
 
                 });
@@ -583,7 +628,7 @@
                     $('#social_media_submit_button').html(spinner_login);
                     $("#social_media_submit_button").attr("disabled", "disabled");
 
-                    phone_attributes.forEach(element => {
+                    social_media_attributes.forEach(element => {
                         $(`#invalid-feedback-${element}`).remove();
                         $(`#${element}`).removeClass('is-invalid');
                     });
@@ -602,10 +647,10 @@
                         $('#social_media_submit_button').text('Salvar');
                         $("#social_media_submit_button").removeAttr("disabled", "disabled");
                         $('#social_media_list').append(`
-                            <tr id="phone_${data.data.id}">
+                            <tr id="sm_${data.data.id}">
                                 <td>${data.data.sm_name}</td>
                                 <td>${data.data.sm_url}</td>
-                                <td><button type="button" class="btn btn-sm btn-danger" onclick="deletePhone(${data.data.id})">Remover</button></td>
+                                <td><button type="button" class="btn btn-sm btn-danger" onclick="deleteSm(${data.data.id})">Remover</button></td>
                             </tr>
                         `);
                         $('#baseModal').modal('hide');

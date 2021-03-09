@@ -141,11 +141,6 @@
         $('#new_product_form').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
-                let TotalImages = $('#image')[0].files.length; //Total Images
-                for (let i = 0; i < TotalImages; i++) {
-                    formData.append('total_image', TotalImages);
-                }
-
 
                 $.ajax({
                     headers: {

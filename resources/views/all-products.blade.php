@@ -1,6 +1,37 @@
 @extends('layout.public')
 
 @section('css')
+    .c-main {
+    padding-top: 0;
+    }
+
+    .container {
+    margin-top: 20px;
+    padding: 50px;
+    }
+
+    .card-deck{
+    margin-top: 10px;
+    margin-left: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-gap: .5rem;
+    }
+
+    .card-img-top {
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+    }
+
+
+    .carousel img {
+    width: 100%;
+    object-fit: cover;
+    max-height: 400px;
+    }
+
+
 @endsection
 @section('content')
     <div id="caroulseProducts" class="carousel slide " data-ride="carousel">

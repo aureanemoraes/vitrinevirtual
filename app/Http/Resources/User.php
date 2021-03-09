@@ -29,6 +29,7 @@ class User extends JsonResource
             'is_admin' => $this->is_admin,
             'rg' => $this->rg,
             'uf_rg' => $this->uf_rg,
+            'image_path' => $this->image_path,
             'gender' => $this->gender,
             'ethnicity' => $this->ethnicity,
             'civil_status' => $this->civil_status,
