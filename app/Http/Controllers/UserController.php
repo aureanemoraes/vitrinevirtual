@@ -12,9 +12,16 @@ class UserController extends BaseController
 {
     public function index()
     {
-        $users = User::all();
 
-        return $this->sendResponse(UserResource::collection($users), 'Users retrieved successfully.');
+        $current_user = auth('api')->user();
+        if($current_user->is_admin) {
+            $users = User::all();
+            return $this->sendResponse(UserResource::collection($users), 'Users retrieved successfully.');
+        } else {
+
+            return $this->sendResponse(UserResource::collection([$current_user]), 'Users retrieved successfully.');
+        }
+
     }
 
     public function public_index()

@@ -17,7 +17,7 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h2>Novo usuário</h2>
+                <h2>Alterar usuário</h2>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
@@ -37,7 +37,9 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div id="user_tab" class="container tab-pane active"><br>
-                        <form id="new_user_form">
+                        <form id="user_update_form" enctype="multipart/form-data">
+                            <input type="hidden" name="_method" value="PUT">
+
                             <section>
                                 <h3>Dados pessoais</h3>
                                 <div class="form-row">
@@ -124,6 +126,14 @@
                                         <label for="password_confirmation">Confirmação de senha</label>
                                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="******">
                                     </div>
+                                </div>
+                            </section>
+                            <section>
+                                <h3>Imagem de perfil</h3>
+                                <div class="form-group" id="image_container">
+                                    <input type="file" class="form-control" id="image" name="image">
+                                </div>
+                                <div class="holder">
                                 </div>
                             </section>
                             <section>
@@ -676,10 +686,9 @@
                 $('#baseModal').modal('show');
             });
 
-            $('#new_user_form').submit((e) => {
+            $('#user_update_form').submit((e) => {
                 e.preventDefault();
-                const data = new FormData(e.target);
-                const info = Object.fromEntries(data.entries());
+                const info_update = new FormData(e.target);
 
                 $('#submit_button').html(spinner_login);
                 $("#submit_button").attr("disabled", "disabled");
@@ -694,9 +703,12 @@
                         accept: 'application/json',
                         authorization: `Bearer ${user_token}`
                     },
-                    method: "PUT",
+                    method: "POST",
                     url: "/api/users/" + id,
-                    data: info,
+                    data: info_update,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                 });
 
                 login_request.done(function( data ) {

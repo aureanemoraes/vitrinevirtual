@@ -54,6 +54,11 @@
         background: #fff;
         min-height: 460px;
     }
+
+    .card {
+    max-width: 300px;
+    max-height: fit-content;
+    }
 @endsection
 
 @section('content')
@@ -63,7 +68,6 @@
                 <div class="profile-sidebar">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic" align="center">
-                        <img src="https://economia.estadao.com.br/blogs/sua-oportunidade/wp-content/uploads/sites/49/2018/03/woman-868534_960_720.jpg" class="img-responsive" alt="">
                     </div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
@@ -104,6 +108,10 @@
                     let user = data[0];
                     $('.profile-usertitle-name').html(user.default_name);
                     $('.profile-usertitle-job').html('Microempreendedora');
+                    $('.profile-userpic').append(`
+                        <img src="/profile/${user.image_path}" class="img-responsive" alt="">
+
+                    `);
 
                     for(product of user.products) {
                         if(product.images.length > 0) {

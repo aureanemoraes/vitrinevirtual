@@ -31,6 +31,11 @@
     max-height: 400px;
     }
 
+    .card {
+    max-width: 300px;
+    max-height: fit-content;
+    }
+
 
 @endsection
 @section('content')

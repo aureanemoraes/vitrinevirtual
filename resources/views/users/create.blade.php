@@ -275,6 +275,23 @@
                 console.log(data);
             });
         }
+        function deleteSm(sm_id) {
+            var login_request = $.ajax({
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${user_token}`
+                },
+                method: "DELETE",
+                url: "/api/social_media/" + sm_id,
+            });
+
+            login_request.done(function( data ) {
+                $('#sm_' + sm_id).remove();
+            });
+
+            login_request.fail(function( data ) {
+            });
+        }
         $(function() {
             var attributes = [
                 'name',
@@ -432,7 +449,7 @@
                     $('#zip_code_button').text('Buscar');
 
                     $('#public_place').val(data.logradouro);
-                    $('#neighborhood').val(data.localidade);
+                    $('#neighborhood').val(data.bairro);
                     $('#uf').val(data.uf);
 
                 });
@@ -554,7 +571,7 @@
                     $('#social_media_submit_button').html(spinner_login);
                     $("#social_media_submit_button").attr("disabled", "disabled");
 
-                    phone_attributes.forEach(element => {
+                    social_media_attributes.forEach(element => {
                         $(`#invalid-feedback-${element}`).remove();
                         $(`#${element}`).removeClass('is-invalid');
                     });
@@ -573,10 +590,10 @@
                         $('#social_media_submit_button').text('Salvar');
                         $("#social_media_submit_button").removeAttr("disabled", "disabled");
                         $('#social_media_list').append(`
-                            <tr id="phone_${data.data.id}">
+                            <tr id="sm_${data.data.id}">
                                 <td>${data.data.sm_name}</td>
                                 <td>${data.data.sm_url}</td>
-                                <td><button type="button" class="btn btn-sm btn-danger" onclick="deletePhone(${data.data.id})">Remover</button></td>
+                                <td><button type="button" class="btn btn-sm btn-danger" onclick="deleteSm(${data.data.id})">Remover</button></td>
                             </tr>
                         `);
                         $('#baseModal').modal('hide');
