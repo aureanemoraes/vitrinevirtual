@@ -95,44 +95,7 @@
                                      </div>
                                  </div>
                                  `);
-                                 /*
-                                 if(i == 0) {
-                                     $('.carousel-indicators').append(`
-                                        <li data-target="#carouselProducts" data-slide-to="${i}" class="active"></li>
-                                    `);
-                                     $('.carousel-inner').append(`
-                                        <div class="carousel-item active" align="center">
-                                            <img src="/products/${product.images[0].path}" style="width: 500px; height: 500px;" class="d-block "/>
-                                            <div class="carousel-caption d-md-block">
-                                               <h5>${product.main_name}</h5>
-                                               <p>${product.description} <a href="/vitrine/produto/${product.id}">Mais informações</a></p>
-                                            </div>
-                                        </div>
-                                   `);
-                                 }
-                                 else {
-                                     $('.carousel-indicators').append(`
-                                        <li data-target="#carouselProducts" data-slide-to="${i}"></li>
-                                    `);
-                                     $('.carousel-inner').append(`
-                                        <div class="carousel-item"  align="center">
-                                        <img src="/products/${product.images[0].path}" style="width: 500px; height: 500px;" class="d-block "/>
-                                        <div class="carousel-caption d-md-block">
-                                                <h5>${product.main_name}</h5>
-                                                <p>${product.description} <a href="/vitrine/produto/${product.id}">Mais informações</a></p>
-                                            </div>
-                                        </div>
-                                   `);
-                                 }
-                                 i++;
-
-                                  */
                              }
-                          }
-                          for(user of users) {
-                              $('.list-group').append(`
-                                <a href="/vitrine/vendedora/${user.id}" class="list-group-item list-group-item-action">${user.default_name}</a>
-                            `);
                           }
                       },
                   error: function(data) {

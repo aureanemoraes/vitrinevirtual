@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Phone;
-use App\Models\Address;
-use App\Models\SocialMedia;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Validator;
@@ -21,7 +18,7 @@ class UserController extends BaseController
 
     public function public_index()
     {
-        $users = User::where('is_admin', 0)->get();
+        $users = User::where('is_admin', 0)->withCount('products')->get();
 
         return $this->sendResponse(UserResource::collection($users), 'Users retrieved successfully.');
     }

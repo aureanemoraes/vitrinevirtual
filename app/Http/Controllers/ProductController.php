@@ -38,7 +38,7 @@ class ProductController extends BaseController
     public function public_index_by_user($user_id) {
         //$products = Product::all();
         //return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
-        $produts = User::with('products.images')->where('id', $user_id)->get();
+        $produts = User::with('products.images')->withCount('products')->where('id', $user_id)->get();
         return $produts;
     }
 

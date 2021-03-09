@@ -40,6 +40,7 @@ class User extends JsonResource
             'addresses' => AddressResource::collection($this->addresses),
             'phones' => PhoneResource::collection($this->phones),
             'social_media' => SocialMediaResource::collection($this->socialMedia),
+            'products_count' => $this->products_count
 
             //'bussiness' => BussinessResource::collection($this->phones),
         ];

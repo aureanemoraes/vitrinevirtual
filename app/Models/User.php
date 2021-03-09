@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,7 +33,8 @@ class User extends Authenticatable
         'civil_status',
         'scholarity',
         'bussiness_name',
-        'bussiness_description'
+        'bussiness_description',
+        'products_count'
     ];
 
     /**
@@ -47,7 +49,7 @@ class User extends Authenticatable
 
     protected $appends = [
         'default_name',
-        'products_count'
+        'age'
     ];
 
     /**
@@ -89,8 +91,8 @@ class User extends Authenticatable
         }
     }
 
-    public function getProductsCountAttribute() {
-        $a = count($this->products);
-        return $a;
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->attributes['birthdate'])->age;
     }
 }

@@ -114,6 +114,12 @@
                                 </ul>
                             </td>
                         </tr>
+                        <tr>
+                            <th scope="col">Por</th>
+                            <td>
+                                <a href="/vitrine/empreendedoras/${user.id}">${user.default_name}</a>
+                            </td>
+                        </tr>
                     `);
 
                     for(pm of product.payment_methods) {
